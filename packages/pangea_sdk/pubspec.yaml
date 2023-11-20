@@ -1,6 +1,6 @@
 name: pangea_sdk
 description: Flutter package for Pangea, enabling using Pangea services
-version: 0.0.1
+version: 0.0.1-beta.1
 homepage: https://pangea.cloud/
 repository: https://github.com/pangeacyber/pangea_flutter
 
