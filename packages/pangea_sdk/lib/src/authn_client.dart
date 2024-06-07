@@ -6,7 +6,7 @@ import 'dart:convert';
 
 import 'types.dart';
 
-const API_VERSION = 'v1';
+const API_VERSION = 'v2';
 const USER_STORAGE_KEY = "pangea_user_data";
 
 class AuthNClient {
