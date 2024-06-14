@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pangea_sdk/src/types.dart';
+import '../utils/colors.dart';
 
 class UserProfile extends StatelessWidget {
   final Session? userData;
@@ -10,13 +11,13 @@ class UserProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
+        const Padding(
+          padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
           child: Text(
             'This is a sample user profile page so you have successfully logged in. See the details of your session below',
             maxLines: 4,
             style: TextStyle(
-              color: Colors.grey[700],
+              color: textColor,
               fontSize: 16,
             ),
           ),

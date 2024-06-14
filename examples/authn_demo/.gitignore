@@ -46,3 +46,5 @@ app.*.map.json
 ios/.generated/
 packages
 pubspec.lock
+
+env.json

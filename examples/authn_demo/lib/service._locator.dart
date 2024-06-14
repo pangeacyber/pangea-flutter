@@ -7,12 +7,10 @@ void setupLocator() async {
   // init
   authnBrowserClient = AuthNBrowserClient(
     config: ClientConfig(
-        clientToken:
-            'pcl_your_pangea_authn_client_token', // Get it from https://console.pangea.cloud/service/authn
-        domain:
-            'abc.def.pangea.cloud', // Get it from https://console.pangea.cloud/service/authn
-        callbackUri: 'http://localhost:57253', // Your local dev url
-        hostedLoginUri:
-            'https://pdn-your_hosted_login_page.pangea.cloud/authorize?state=xxxxxxxxxxxxx'), // Get it from https://console.pangea.cloud/service/authn
+        clientToken: const String.fromEnvironment('PANGEA_CLIENT_TOKEN', defaultValue: 'no-value-provided'),
+        domain: const String.fromEnvironment('PANGEA_DOMAIN', defaultValue: 'no-value-provided'),
+        callbackUri: const String.fromEnvironment('PANGEA_AUTHN_CALLBACK_URI', defaultValue: 'no-value-provided'),
+        hostedLoginUri: const String.fromEnvironment('PANGEA_AUTHN_HOSTED_LOGIN_URI', defaultValue: 'no-value-provided'),
+    )
   );
 }
