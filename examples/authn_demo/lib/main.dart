@@ -20,8 +20,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.yellow),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
+        fontFamily: 'Roboto',
+
       ),
       home: const SafeArea(top: false, bottom: false, child: MyHomePage(title: 'Flutter Demo Home Page')),
     );
@@ -76,21 +78,93 @@ class _MyHomePageState extends State<MyHomePage> {
       initialData: null,
       builder: (BuildContext context, AsyncSnapshot<Session?> snapshot) {
         if (snapshot.hasData && snapshot.data != null) {
-          return UserProfile(userData: snapshot.data);
-        }
-
-        return const Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-              
-            Text(
-              'You are not logged in yet, please use the button above to login.',
-              style: TextStyle(
-                fontSize: 16,
-                color: textColor
+          return Scaffold(
+            backgroundColor: bgColor,
+              appBar: AppBar(
+                elevation: 0,
+                backgroundColor: highlightColor,
+                foregroundColor: textColor,
+                automaticallyImplyLeading: false,
+                centerTitle: true,
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Your Account'),
+                    _authButton,
+                  ],
+                ),
               ),
-            ),
-          ],
+              body: Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    colors: [
+                      bgStartColor,
+                      bgEndColor,
+                    ],
+                  )
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: DefaultTextStyle.merge(
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color:  textColor,
+                      fontWeight: FontWeight.normal,
+                    ),
+                    child: Center(
+                      child: UserProfile(userData: snapshot.data),
+                    ),
+                  )
+                )
+              )
+            );
+          }
+        
+          return Scaffold(
+            backgroundColor: bgColor,
+            body: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [
+                    bgStartColor,
+                    bgEndColor,
+                  ],
+                )
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: DefaultTextStyle.merge(
+                  style: const TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 12,
+                    color:  textColor,
+                    fontWeight: FontWeight.normal,
+                  ),
+                  child: Center(
+                    child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const Padding(
+                        padding: EdgeInsets.all(24),
+                        child: Image(image: AssetImage("lib/images/manidae-logo-white.png"), width: 200,)
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: ElevatedButton(
+                          onPressed: _redirectToLogin,
+                          child: const Text("Sign In")
+                        )
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            )
+          )
         );
       },
     );
@@ -98,36 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: bgColor,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: highlightColor,
-          foregroundColor: textColor,
-          automaticallyImplyLeading: false,
-          centerTitle: true,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('Home'),
-              _authButton,
-            ],
-          ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: DefaultTextStyle.merge(
-            style: const TextStyle(
-              fontFamily: 'Roboto',
-              fontSize: 12,
-              color:  textColor,
-              fontWeight: FontWeight.normal,
-            ),
-            child: Center(
-              child: _bodyContent,
-            ),
-          )
-        )
-      );
+    return _bodyContent;
+    
   }
 }
