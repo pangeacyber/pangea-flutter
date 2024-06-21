@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+
+  merge_group:
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        platform: ["ios", "macos"]
+    defaults:
+      run:
+        working-directory: ./examples/authn_demo
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.1.5
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2.9.1
+        with:
+          channel: stable
+          cache: true
+      - run: flutter --version
+      - run: flutter config --no-analytics
+      - run: flutter build ${{ matrix.platform }} --release
+        if: matrix.platform != 'ios'
+      - run: flutter build ${{ matrix.platform }} --release --no-codesign
+        if: matrix.platform == 'ios'
