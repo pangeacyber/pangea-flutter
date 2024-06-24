@@ -45,6 +45,9 @@ app.*.map.json
 
 ios/.generated/
 packages
-pubspec.lock
 
 env.json
+
+# For applications, we should commit this. The gitignore at the top of the
+# repo has *.lock to cover the platform directories
+!pubspec.lock

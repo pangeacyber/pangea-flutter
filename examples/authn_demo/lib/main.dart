@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:pangea_sdk/pangea_sdk.dart';
 
 import 'pages/user_profile.dart';
@@ -45,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _logOut() async {
-    // Clear the SDK state
+    // Clean up our user data on log out
     authnBrowserClient.clearUserData();
   }
 
@@ -57,6 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
         VoidCallback? handler = _redirectToLogin;
         dynamic icon = Icons.login_sharp;
 
+        // Only show the log out button if we do not have a session
         if (authnBrowserClient.session != null) {
           handler = _logOut;
           icon = Icons.logout_sharp;
@@ -77,6 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
       stream: authnBrowserClient.userBroadcastStream,
       initialData: null,
       builder: (BuildContext context, AsyncSnapshot<Session?> snapshot) {
+        // If we have a session we can show the user their profile
         if (snapshot.hasData && snapshot.data != null) {
           return Scaffold(
             backgroundColor: bgColor,
@@ -122,6 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
             );
           }
         
+          // By default ask the user to log in
           return Scaffold(
             backgroundColor: bgColor,
             body: Container(
