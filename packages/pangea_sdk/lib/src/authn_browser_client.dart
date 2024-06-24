@@ -217,7 +217,7 @@ class AuthNBrowserClient extends AuthNClient {
             hideToolbarTop: true,
             hideToolbarBottom: true,
             hideCloseButton: false,
-            presentationStyle: ModalPresentationStyle.POPOVER,
+            presentationStyle: ModalPresentationStyle.OVER_FULL_SCREEN,
           ),
           webViewSettings: InAppWebViewSettings(
             userAgent: 'random',
