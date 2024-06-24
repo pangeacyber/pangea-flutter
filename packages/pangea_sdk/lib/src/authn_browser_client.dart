@@ -9,6 +9,12 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../pangea_sdk.dart';
 
+logMessage(message) {
+  if (kDebugMode) {
+    print(message);
+  }
+}
+
 class PangeaAuthNBrowser extends InAppBrowser {
   late String redirectURL;
   late Function onLoginSuccess;
@@ -25,24 +31,23 @@ class PangeaAuthNBrowser extends InAppBrowser {
 
   @override
   Future onBrowserCreated() async {
-    print('\n\nBrowser Created!\n\n');
+    logMessage('\n\nBrowser Created!\n\n');
   }
 
   @override
   Future onLoadStart(url) async {
-    print('Started $url');
+    logMessage('Started $url');
   }
 
   @override
   Future onLoadStop(url) async {
-    print('Stopped $url');
+    logMessage('Stopped $url');
     pullToRefreshController?.endRefreshing();
   }
 
   @override
   void onReceivedError(WebResourceRequest request, WebResourceError error) {
-    print('Cant load ${request.url}.. Error: ${error.description}');
-    // onError(request.url, 0, error.description);
+    logMessage('Cant load ${request.url}.. Error: ${error.description}');
   }
 
   @override
@@ -55,13 +60,12 @@ class PangeaAuthNBrowser extends InAppBrowser {
   @override
   void onLoadError(url, code, message) {
     pullToRefreshController?.endRefreshing();
-    print('Error occured $url: $code, $message');
-    // onError(url, code, message);
+    logMessage('Error occured $url: $code, $message');
   }
 
   @override
   void onProgressChanged(progress) {
-    print('Progress: $progress');
+    logMessage('Progress: $progress');
     if (progress == 100) {
       pullToRefreshController?.endRefreshing();
     }
@@ -69,13 +73,13 @@ class PangeaAuthNBrowser extends InAppBrowser {
 
   @override
   void onExit() {
-    print('Browser closed!');
+    logMessage('Browser closed!');
   }
 
   @override
   Future<NavigationActionPolicy> shouldOverrideUrlLoading(
       navigationAction) async {
-    print('\n\nOverride ${navigationAction.request.url}\n\n');
+    logMessage('\n\nOverride ${navigationAction.request.url}\n\n');
     if (navigationAction.request.url.toString().startsWith(redirectURL)) {
       if (navigationAction.request.url?.queryParameters != null &&
           navigationAction.request.url!.queryParameters.containsKey('code')) {
@@ -132,7 +136,7 @@ class AuthNBrowserClient extends AuthNClient {
         _session != null &&
         _session?.refreshToken.token != null) {
       var expiryTime = DateTime.tryParse(_session?.userToken.expire ?? '');
-      print("Expires in $expiryTime Now: ${DateTime.now().toUtc()}");
+      logMessage("Expires in $expiryTime Now: ${DateTime.now().toUtc()}");
       if (expiryTime != null) {
         var duration = expiryTime
             .add(const Duration(seconds: -30))
@@ -155,7 +159,7 @@ class AuthNBrowserClient extends AuthNClient {
     }
 
     if (store) {
-      print('Storing new data');
+      logMessage('Storing new data');
       storage.write(key: USER_STORAGE_KEY, value: json.encode(data));
     }
   }
@@ -173,7 +177,7 @@ class AuthNBrowserClient extends AuthNClient {
   }
 
   Future<ClientResponse> refreshSession(String token) async {
-    print('Refreshing session: $token');
+    logMessage('Refreshing session');
     final Map<String, dynamic> payload = {
       'refresh_token': token,
     };
@@ -182,7 +186,7 @@ class AuthNBrowserClient extends AuthNClient {
     if (response.success && response.response.result != null) {
       setUserData(response.response.result, true);
     } else {
-      print('Error refreshing session: ${response.response}');
+      logMessage('Error refreshing session: ${response.response}');
       clearUserData();
     }
 
@@ -196,18 +200,18 @@ class AuthNBrowserClient extends AuthNClient {
       if (userInfo.success && userInfo.response?.result != null) {
         setUserData(userInfo.response.result, true);
       } else {
-        print(
+        logMessage(
             'Incompatible response from the server ${jsonEncode(userInfo.response?.result)}');
       }
     } catch (e) {
-      print('Error getting userinfo: $e\n');
+      logMessage('Error getting userinfo: $e\n');
     }
   }
 
   void handleLoginError(String url, int code, String description) {
-    print('Error loading $url\n');
-    print('code: $code\n');
-    print('state: $description\n');
+    logMessage('Error loading $url\n');
+    logMessage('code: $code\n');
+    logMessage('state: $description\n');
   }
 
   void redirectToLogin() async {
