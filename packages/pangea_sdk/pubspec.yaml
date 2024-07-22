@@ -14,9 +14,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_inappwebview: ^6.0.0
   flutter_secure_storage: ^9.2.2
   http: ^1.2.2
-  flutter_inappwebview: ^6.0.0-beta.24+1
 
 dev_dependencies:
   flutter_test:
