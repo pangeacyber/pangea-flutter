@@ -24,7 +24,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        platform: ["ios", "macos"]
+        platform: ["apk", "ios", "macos"]
     defaults:
       run:
         working-directory: ./examples/authn_demo
@@ -36,8 +36,15 @@ jobs:
         with:
           channel: stable
           cache: true
+      - name: Setup Java
+        uses: actions/setup-java@v4.2.2
+        with:
+          distribution: temurin
+          java-version: 17
+        if: matrix.platform == 'apk'
       - run: flutter --version
       - run: flutter config --no-analytics
+      - run: flutter doctor --verbose
       - run: flutter build ${{ matrix.platform }} --release
         if: matrix.platform != 'ios'
       - run: flutter build ${{ matrix.platform }} --release --no-codesign
