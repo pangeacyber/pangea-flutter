@@ -9,7 +9,7 @@ false_secrets:
 
 environment:
   sdk: ">=3.5.2 <4.0.0"
-  flutter: ">=3.24.1"
+  flutter: ">=3.24.2"
 
 dependencies:
   flutter:
